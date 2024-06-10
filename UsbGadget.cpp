@@ -34,15 +34,22 @@ namespace hardware {
 namespace usb {
 namespace gadget {
 
+#if 0
 string enabledPath;
 constexpr char kHsi2cPath[] = "/sys/devices/platform/10d50000.hsi2c";
 constexpr char kI2CPath[] = "/sys/devices/platform/10d50000.hsi2c/i2c-";
 constexpr char kAccessoryLimitCurrent[] = "i2c-max77759tcpc/usb_limit_accessory_current";
 constexpr char kAccessoryLimitCurrentEnable[] = "i2c-max77759tcpc/usb_limit_accessory_enable";
+#endif
 
+#if 0
 UsbGadget::UsbGadget() : mGadgetIrqPath("") {
 }
+#else
+UsbGadget::UsbGadget() {}
+#endif
 
+#if 0
 Status UsbGadget::getUsbGadgetIrqPath() {
     std::string irqs;
     size_t read_pos = 0;
@@ -84,6 +91,7 @@ Status UsbGadget::getUsbGadgetIrqPath() {
 
     return Status::SUCCESS;
 }
+#endif
 
 void currentFunctionsAppliedCallback(bool functionsApplied, void *payload) {
     UsbGadget *gadget = (UsbGadget *)payload;
@@ -178,6 +186,7 @@ Status UsbGadget::setupFunctions(long functions,
     return Status::SUCCESS;
 }
 
+#if 0
 Status getI2cBusHelper(string *name) {
     DIR *dp;
 
@@ -200,6 +209,7 @@ Status getI2cBusHelper(string *name) {
     ALOGE("Failed to open %s", kHsi2cPath);
     return Status::ERROR;
 }
+#endif
 
 ScopedAStatus UsbGadget::setCurrentUsbFunctions(int64_t functions,
                                                const shared_ptr<IUsbGadgetCallback> &callback,
@@ -214,6 +224,7 @@ ScopedAStatus UsbGadget::setCurrentUsbFunctions(int64_t functions,
     mCurrentUsbFunctions = functions;
     mCurrentUsbFunctionsApplied = false;
 
+#if 0
     getI2cBusHelper(&path);
     accessoryCurrentLimitPath = kI2CPath + path + "/" + kAccessoryLimitCurrent;
     accessoryCurrentLimitEnablePath = kI2CPath + path + "/" + kAccessoryLimitCurrentEnable;
@@ -221,6 +232,7 @@ ScopedAStatus UsbGadget::setCurrentUsbFunctions(int64_t functions,
     // Get the gadget IRQ number before tearDownGadget()
     if (mGadgetIrqPath.empty())
         getUsbGadgetIrqPath();
+#endif
 
     // Unlink the gadget and stop the monitor if running.
     Status status = tearDownGadget();
@@ -249,6 +261,7 @@ ScopedAStatus UsbGadget::setCurrentUsbFunctions(int64_t functions,
         goto error;
     }
 
+#if 0
     if (functions & GadgetFunction::NCM) {
         if (!mGadgetIrqPath.empty()) {
             if (!WriteStringToFile(BIG_CORE, mGadgetIrqPath))
@@ -260,6 +273,7 @@ ScopedAStatus UsbGadget::setCurrentUsbFunctions(int64_t functions,
                 ALOGI("Cannot move gadget IRQ to medium core, path:%s", mGadgetIrqPath.c_str());
         }
     }
+#endif
 
     if (ReadFileToString(CURRENT_USB_TYPE_PATH, &current_usb_type))
         current_usb_type = Trim(current_usb_type);
@@ -267,6 +281,7 @@ ScopedAStatus UsbGadget::setCurrentUsbFunctions(int64_t functions,
     if (ReadFileToString(CURRENT_USB_POWER_OPERATION_MODE_PATH, &current_usb_power_operation_mode))
         current_usb_power_operation_mode = Trim(current_usb_power_operation_mode);
 
+#if 0
     if (functions & GadgetFunction::ACCESSORY &&
         current_usb_type == "Unknown SDP [CDP] DCP" &&
         (current_usb_power_operation_mode == "default" ||
@@ -282,6 +297,7 @@ ScopedAStatus UsbGadget::setCurrentUsbFunctions(int64_t functions,
         if (!WriteStringToFile("0", accessoryCurrentLimitEnablePath))
             ALOGI("unvote accessory limit current failed");
     }
+#endif
 
     ALOGI("Usb Gadget setcurrent functions called successfully");
     return ScopedAStatus::fromServiceSpecificErrorWithMessage(

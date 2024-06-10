@@ -58,12 +58,12 @@ using ::ndk::ScopedAStatus;
 using ::std::shared_ptr;
 using ::std::string;
 
-constexpr char kGadgetName[] = "11110000.dwc3";
+constexpr char kGadgetName[] = "fe980000.usb";
 constexpr char kProcInterruptsPath[] = "/proc/interrupts";
 constexpr char kProcIrqPath[] = "/proc/irq/";
 constexpr char kSmpAffinityList[] = "/smp_affinity_list";
 #ifndef UDC_PATH
-#define UDC_PATH "/sys/class/udc/11110000.dwc3/"
+#define UDC_PATH "/sys/class/udc/fe980000.usb/"
 #endif
 //static MonitorFfs monitorFfs(kGadgetName);
 
@@ -84,7 +84,9 @@ struct UsbGadget : public BnUsbGadget {
 
     // Makes sure that only one request is processed at a time.
     std::mutex mLockSetCurrentFunction;
+#if 0
     std::string mGadgetIrqPath;
+#endif
     long mCurrentUsbFunctions;
     bool mCurrentUsbFunctionsApplied;
     UsbSpeed mUsbSpeed;
