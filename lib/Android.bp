@@ -24,7 +24,7 @@ package {
 }
 
 cc_library_static {
-    name: "libusbconfigfs-2",
+    name: "libusbconfigfs-2.rpi",
     vendor_available: true,
     export_include_dirs: ["include"],
 

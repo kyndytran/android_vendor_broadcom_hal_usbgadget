@@ -67,10 +67,10 @@ using ::android::hardware::usb::gadget::setVidPid;
 using ::android::hardware::usb::gadget::unlinkFunctions;
 using ::std::string;
 
-constexpr char kGadgetName[] = "11110000.usb";
+constexpr char kGadgetName[] = "fe980000.usb";
 static MonitorFfs monitorFfs(kGadgetName);
 
-#define UDC_PATH "/sys/class/udc/11110000.usb/"
+#define UDC_PATH "/sys/class/udc/fe980000.usb/"
 #define SPEED_PATH UDC_PATH "current_speed"
 
 struct UsbGadget : public IUsbGadget {
